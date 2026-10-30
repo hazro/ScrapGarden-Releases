@@ -62,7 +62,7 @@ try {
         throw 'The SHA256 check failed. The existing ZIP was not changed; please run again.'
     }
     if ([IO.File]::Exists($target)) {
-        [IO.File]::Replace($pending, $target, $null)
+        [IO.File]::Replace($pending, $target, [NullString]::Value)
     } else {
         [IO.File]::Move($pending, $target)
     }

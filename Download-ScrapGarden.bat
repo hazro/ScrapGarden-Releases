@@ -46,10 +46,18 @@ try {
         if ($inputStream) { $inputStream.Dispose() }
         if ($response) { $response.Dispose() }
     }
-    if ((Get-Item -LiteralPath $pending).Length -ne [long]$asset[0].size) {
-        throw 'The downloaded file size does not match. The existing ZIP was not changed.'
+    # Use .NET hashing so no extra PowerShell module is required.
+    $fileStream = [IO.File]::OpenRead($pending)
+    $hasher = [Security.Cryptography.SHA256]::Create()
+    try {
+        if ($fileStream.Length -ne [long]$asset[0].size) {
+            throw 'The downloaded file size does not match. The existing ZIP was not changed.'
+        }
+        $actualHash = [BitConverter]::ToString($hasher.ComputeHash($fileStream)).Replace('-', '').ToLowerInvariant()
+    } finally {
+        $fileStream.Dispose()
+        $hasher.Dispose()
     }
-    $actualHash = (Get-FileHash -LiteralPath $pending -Algorithm SHA256).Hash.ToLowerInvariant()
     if ($actualHash -ne $asset[0].digest.Substring(7).ToLowerInvariant()) {
         throw 'The SHA256 check failed. The existing ZIP was not changed; please run again.'
     }

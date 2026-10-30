@@ -6,7 +6,7 @@ Windows用の配布専用リポジトリです。
 
 [**SCRAP GARDEN for Windows（ZIP）**](https://github.com/hazro/ScrapGarden-Releases/releases/latest/download/ScrapGarden-Windows.zip)
 
-現在の版：**26.25.0-B**
+現在の版：**27.25.0-B**
 
 このリンクは今後の更新でも変わりません。ZIPをすべて展開してから「SCRAP GARDEN B.exe」を起動してください。
 
